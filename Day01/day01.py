@@ -1,4 +1,5 @@
 # https://adventofcode.com/2021/day/1
+from advent2021.common.read_input import read_file_to_list_int
 
 TEST_CASE = {
     "numbers": [199, 200, 208, 210, 200, 207, 240, 269, 260, 263],
@@ -45,7 +46,7 @@ def read_file_input(filename):
 
 if __name__ == '__main__':
     print(f'My part one Test Case answer is {part_one(TEST_CASE["numbers"])}, expecting {TEST_CASE["part_one_result"]} ')
-    print(f'My part one real answer is {part_one(read_file_input("input.txt"))}')
+    print(f'My part one real answer is {part_one(read_file_to_list_int("input.txt"))}')
     print("------------")
     print(f'My part two Test Case answer is {part_two(TEST_CASE["numbers"])}, expecting {TEST_CASE["part_two_result"]} ')
     print(f'My part two real answer is {part_two(read_file_input("input.txt"))}')
