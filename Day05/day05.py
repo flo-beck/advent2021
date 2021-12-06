@@ -193,4 +193,4 @@ if __name__ == '__main__':
     print(f'My part one real answer is {part_one(read_file_lines("input.txt"))}')  #7142
     print("------------")
     # print(f'My part two Test Case answer is {part_two(TEST_CASE["input"])}, expecting {TEST_CASE["part_two_result"]} ')
-    print(f'My part two real answer is {part_two(read_file_lines("input.txt"))}') #
+    print(f'My part two real answer is {part_two(read_file_lines("input.txt"))}') #20012
