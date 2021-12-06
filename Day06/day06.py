@@ -31,6 +31,9 @@ def part_one(my_input):
     return len(my_lanterns)
 
 
+# ----------------------------- part 2 ------------------------------
+
+
 def setup_counter(list_lanterns):
     counter = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for val in list_lanterns:
@@ -39,15 +42,12 @@ def setup_counter(list_lanterns):
 
 
 def propagate_fish_with_counter(counter):
-    next_counter = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    for x in range(8, -1, -1):
-        if x == 0:
-            zeros = counter[x]
-            next_counter[8] += zeros
-            next_counter[6] += zeros
-        else:
-            next_counter[x-1] = counter[x]
-    return next_counter
+    zeros = counter[0]
+    for x in range(1, 9):
+        counter[x-1] = counter[x]
+    counter[8] = zeros
+    counter[6] += zeros
+    return counter
 
 
 def part_two(my_input):
