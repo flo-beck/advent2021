@@ -59,19 +59,22 @@ def recursive_find_basin(my_input, locations, point, num_rows, num_columns, low_
 
     point_value = int(my_input[point.y][point.x])
     if point_value != 9 and point_value >= low_value:
-        locations.add(point)
-        # go up
-        if point.y > 0:
-            recursive_find_basin(my_input, locations, Point(y=point.y - 1, x=point.x), num_rows, num_columns, point_value)
-        # go down
-        if point.y < num_rows - 1:
-            recursive_find_basin(my_input, locations, Point(y=point.y + 1, x=point.x), num_rows, num_columns, point_value)
-        # go left
-        if point.x > 0:
-            recursive_find_basin(my_input, locations, Point(y=point.y, x=point.x - 1), num_rows, num_columns, point_value)
-        # go right
-        if point.x < num_columns - 1:
-            recursive_find_basin(my_input, locations, Point(y=point.y, x=point.x + 1), num_rows, num_columns, point_value)
+        if point in locations:
+            return
+        else:
+            locations.add(point)
+            # go up
+            if point.y > 0:
+                recursive_find_basin(my_input, locations, Point(y=point.y - 1, x=point.x), num_rows, num_columns, point_value)
+            # go down
+            if point.y < num_rows - 1:
+                recursive_find_basin(my_input, locations, Point(y=point.y + 1, x=point.x), num_rows, num_columns, point_value)
+            # go left
+            if point.x > 0:
+                recursive_find_basin(my_input, locations, Point(y=point.y, x=point.x - 1), num_rows, num_columns, point_value)
+            # go right
+            if point.x < num_columns - 1:
+                recursive_find_basin(my_input, locations, Point(y=point.y, x=point.x + 1), num_rows, num_columns, point_value)
     return
 
 
@@ -114,4 +117,4 @@ if __name__ == '__main__':
     print(f'My part one real answer is {part_one(read_file_lines("input.txt"))}')  #603
     print("------------")
     print(f'My part two Test Case answer is {part_two(TEST_CASE["input"])}, expecting {TEST_CASE["part_two_result"]} ')
-    print(f'My part two real answer is {part_two(read_file_lines("input.txt"))}')  #
+    print(f'My part two real answer is {part_two(read_file_lines("input.txt"))}')  #786780
