@@ -1,4 +1,4 @@
-# https://adventofcode.com/2021/day/9
+# https://adventofcode.com/2021/day/10
 
 from advent2021.common.read_input import read_file_lines, str_numbers_to_list
 import math

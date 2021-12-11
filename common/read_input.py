@@ -18,3 +18,8 @@ def str_numbers_to_list(line, char) -> List[int]:
     my_split = line.split(char)
     my_list = [int(val) for val in my_split]
     return my_list
+
+
+def str_digits_to_list(line) -> List[int]:
+    my_list = [int(val) for val in line]
+    return my_list
