@@ -22,7 +22,7 @@ def parse_fold(line):
     split = line.split()
     axis = split[2].split('=')[0]
     val = split[2].split('=')[1]
-    return Fold(axis=axis, val=val)
+    return Fold(axis=axis, val=int(val))
 
 
 def parse_input(my_input):
@@ -85,6 +85,46 @@ def print_folds(context):
         print(f"fold {fold.axis} on {fold.val}")
 
 
+def merge_row(grid, to_be_merged,  into):
+    row_len = len(grid[to_be_merged])
+    for x in range(row_len):
+        if grid[into][x] == 1 or grid[to_be_merged][x] == 1:
+            grid[into][x] = 1
+        else:
+            grid[into][x] = 0
+
+
+def remove_rows_after_fold(grid, fold_on):
+    while len(grid) > fold_on:
+        grid.pop()
+    return grid
+
+
+def do_vertical_fold(fold, grid):  # do fold from bottom upwards
+    fold_on = fold.val
+    last_row = len(grid) - 1
+    mid_point = len(grid) / 2
+    if fold_on < mid_point - 1:
+        print("Folding bottom above top - not sure what to do here ???")
+
+    #  going to assume that we only ever fold the bottom up to meet the top or be below the top
+    for y in range(fold_on + 1, len(grid)):
+        delta = y - fold_on
+        merge_row(grid, y, fold_on - delta)
+
+    # remove rows below fold
+    return remove_rows_after_fold(grid, fold_on)
+
+
+def do_fold(fold, grid):
+    if fold.axis == 'y':
+        return do_vertical_fold(fold, grid)
+    else:  # fold on x axis
+        print('woops')
+        return
+        # return do_horizontal_fold(fold, grid)
+
+
 def part_one(my_input):
     #  setup input
     context = parse_input(my_input)
@@ -93,6 +133,12 @@ def part_one(my_input):
     #  do actions
     print_grid(grid)
     print_folds(context)
+
+    for fold in context['folds']:
+        grid = do_fold(fold, grid)
+        print("--------------")
+        print_grid(grid)
+        print('')
 
     # get result
     return
