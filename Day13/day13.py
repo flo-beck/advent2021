@@ -11,7 +11,7 @@ import time
 TEST_CASE = {
     "input": ["6,10", "0,14", "9,10", "0,3", "10,4", "4,11", "6,0", "6,12", "4,1", "0,13", "10,12", "3,4", "3,0", "8,4", "1,10", "2,14", "8,10", "9,0", "", "fold along y=7", "fold along x=5"],
     "part_one_result": 17 ,
-    "part_two_result": '?',
+    "part_two_result": 'O',
     }
 
 Point = namedtuple("Point", "y x")
@@ -80,12 +80,16 @@ def print_grid(grid):
     print('')
 
 
+def print_fold(fold):
+    print(f"fold {fold.axis} on {fold.val}")
+
+
 def print_folds(context):
     for fold in context['folds']:
-        print(f"fold {fold.axis} on {fold.val}")
+        print_fold(fold)
 
 
-def merge_row(grid, to_be_merged,  into):
+def merge_row(grid, to_be_merged, into):
     row_len = len(grid[to_be_merged])
     for x in range(row_len):
         if grid[into][x] == 1 or grid[to_be_merged][x] == 1:
@@ -102,7 +106,6 @@ def remove_rows_after_fold(grid, fold_on):
 
 def do_vertical_fold(fold, grid):  # do fold from bottom upwards
     fold_on = fold.val
-    last_row = len(grid) - 1
     mid_point = len(grid) / 2
     if fold_on < mid_point - 1:
         print("Folding bottom above top - not sure what to do here ???")
@@ -116,13 +119,51 @@ def do_vertical_fold(fold, grid):  # do fold from bottom upwards
     return remove_rows_after_fold(grid, fold_on)
 
 
+def merge_column(grid, to_be_merged, into):
+    num_cols = len(grid)
+    for y in range(num_cols):
+        if grid[y][into] == 1 or grid[y][to_be_merged] == 1:
+            grid[y][into] = 1
+        else:
+            grid[y][into] = 0
+
+
+def remove_cols_after_fold(grid, fold_on):
+    while len(grid[0]) > fold_on:
+        for i in range(len(grid)):
+            grid[i].pop()
+    return grid
+
+
+def do_horizontal_fold(fold, grid):
+    fold_on = fold.val
+    mid_point = len(grid[0]) / 2
+    if fold_on < mid_point - 1:
+        print("Folding right edge over left edge - not sure what to do here ???")
+
+    #  going to assume that we only ever fold the right to the left
+    for x in range(fold_on + 1, len(grid[0])):
+        delta = x - fold_on
+        merge_column(grid, x, fold_on - delta)
+
+    # remove rows below fold
+    return remove_cols_after_fold(grid, fold_on)
+
+
 def do_fold(fold, grid):
     if fold.axis == 'y':
         return do_vertical_fold(fold, grid)
     else:  # fold on x axis
-        print('woops')
-        return
-        # return do_horizontal_fold(fold, grid)
+        return do_horizontal_fold(fold, grid)
+
+
+def count_dots(grid):
+    total = 0
+    for y in range(len(grid)):
+        for x in range(len(grid[0])):
+            if grid[y][x] == 1:
+                total += 1
+    return total
 
 
 def part_one(my_input):
@@ -131,36 +172,43 @@ def part_one(my_input):
     grid = create_grid(context)
 
     #  do actions
-    print_grid(grid)
-    print_folds(context)
-
     for fold in context['folds']:
+        # print("--------------")
+        # print_fold(fold)
         grid = do_fold(fold, grid)
-        print("--------------")
-        print_grid(grid)
-        print('')
+        # print_grid(grid)
+        # print('')
+        # get result
+        return count_dots(grid)
 
-    # get result
-    return
+    return count_dots(grid)
 
 
 # ----------------------------- part 2 ------------------------------
 
 
-# def part_two(my_input):
+def part_two(my_input):
     #  setup input
+    context = parse_input(my_input)
+    grid = create_grid(context)
 
     #  do actions
+    for fold in context['folds']:
+        grid = do_fold(fold, grid)
+
+    print("--------------")
+    print_grid(grid)
 
     # get result
+    return count_dots(grid)
 
 
 if __name__ == '__main__':
     print(f'My part one Test Case answer is {part_one(TEST_CASE["input"])}, expecting {TEST_CASE["part_one_result"]}')
-    # print(f'My part one real answer is {part_one(read_file_lines("input.txt"))}')  #
+    print(f'My part one real answer is {part_one(read_file_lines("input.txt"))}')  #
 
     print("------------")
-    # print(f'My part two Test Case answer is {part_two(TEST_CASE["input"])}, expecting {TEST_CASE["part_two_resultA"]}')
-    # print(f'My part two real answer is {part_two(read_file_lines("input.txt"))}')  # 91292
+    print(f'My part two Test Case answer is {part_two(TEST_CASE["input"])}, expecting {TEST_CASE["part_two_result"]}')
+    print(f'My part two real answer is {part_two(read_file_lines("input.txt"))}')  #
 
 
