@@ -23,3 +23,8 @@ def str_numbers_to_list(line, char) -> List[int]:
 def str_digits_to_list(line) -> List[int]:
     my_list = [int(val) for val in line]
     return my_list
+
+
+def str_to_list_chars(line) -> List[str]:
+    my_list = [char for char in line]
+    return my_list
